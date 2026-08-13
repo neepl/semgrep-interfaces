@@ -881,7 +881,6 @@ export type SarifFormatParams = {
   rules: Fpath;
   cli_matches: CliMatch[];
   cli_errors: CliError[];
-  hide_nudge: boolean;
   engine_label: string;
   show_dataflow_traces: boolean;
 }
@@ -905,8 +904,6 @@ export type OutputFormat =
 
 export type FormatContext = {
   is_ci_invocation: boolean;
-  is_logged_in: boolean;
-  is_using_registry: boolean;
 }
 
 export type DumpRulePartitionsParams = {
@@ -3670,7 +3667,6 @@ export function writeSarifFormatParams(x: SarifFormatParams, context: any = x): 
     'rules': _atd_write_required_field('SarifFormatParams', 'rules', writeFpath, x.rules, x),
     'cli_matches': _atd_write_required_field('SarifFormatParams', 'cli_matches', _atd_write_array(writeCliMatch), x.cli_matches, x),
     'cli_errors': _atd_write_required_field('SarifFormatParams', 'cli_errors', _atd_write_array(writeCliError), x.cli_errors, x),
-    'hide_nudge': _atd_write_required_field('SarifFormatParams', 'hide_nudge', _atd_write_bool, x.hide_nudge, x),
     'engine_label': _atd_write_required_field('SarifFormatParams', 'engine_label', _atd_write_string, x.engine_label, x),
     'show_dataflow_traces': _atd_write_required_field('SarifFormatParams', 'show_dataflow_traces', _atd_write_bool, x.show_dataflow_traces, x),
   };
@@ -3681,7 +3677,6 @@ export function readSarifFormatParams(x: any, context: any = x): SarifFormatPara
     rules: _atd_read_required_field('SarifFormatParams', 'rules', readFpath, x['rules'], x),
     cli_matches: _atd_read_required_field('SarifFormatParams', 'cli_matches', _atd_read_array(readCliMatch), x['cli_matches'], x),
     cli_errors: _atd_read_required_field('SarifFormatParams', 'cli_errors', _atd_read_array(readCliError), x['cli_errors'], x),
-    hide_nudge: _atd_read_required_field('SarifFormatParams', 'hide_nudge', _atd_read_bool, x['hide_nudge'], x),
     engine_label: _atd_read_required_field('SarifFormatParams', 'engine_label', _atd_read_string, x['engine_label'], x),
     show_dataflow_traces: _atd_read_required_field('SarifFormatParams', 'show_dataflow_traces', _atd_read_bool, x['show_dataflow_traces'], x),
   };
@@ -3757,16 +3752,12 @@ export function readOutputFormat(x: any, context: any = x): OutputFormat {
 export function writeFormatContext(x: FormatContext, context: any = x): any {
   return {
     'is_ci_invocation': _atd_write_required_field('FormatContext', 'is_ci_invocation', _atd_write_bool, x.is_ci_invocation, x),
-    'is_logged_in': _atd_write_required_field('FormatContext', 'is_logged_in', _atd_write_bool, x.is_logged_in, x),
-    'is_using_registry': _atd_write_required_field('FormatContext', 'is_using_registry', _atd_write_bool, x.is_using_registry, x),
   };
 }
 
 export function readFormatContext(x: any, context: any = x): FormatContext {
   return {
     is_ci_invocation: _atd_read_required_field('FormatContext', 'is_ci_invocation', _atd_read_bool, x['is_ci_invocation'], x),
-    is_logged_in: _atd_read_required_field('FormatContext', 'is_logged_in', _atd_read_bool, x['is_logged_in'], x),
-    is_using_registry: _atd_read_required_field('FormatContext', 'is_using_registry', _atd_read_bool, x['is_using_registry'], x),
   };
 }
 

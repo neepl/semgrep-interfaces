@@ -20,8 +20,7 @@ FILES= \
   ast_generic_$(VER)_j.mli \
   Language.ml \
   Language.mli \
-  lang.json \
-  semgrep_metrics.py
+  lang.json
 
 # Regenerate all files.
 #
@@ -39,7 +38,6 @@ force-build:
 build: $(FILES)
 
 # need atdpy >= 2.11.0 to support parametrized types
-# need atdpy >= 2.12.0 for semgrep_metric.py
 %.py: %.atd
 	atdpy $<
 
