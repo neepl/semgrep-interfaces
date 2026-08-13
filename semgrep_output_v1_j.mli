@@ -612,7 +612,6 @@ type sarif_format_params = Semgrep_output_v1_t.sarif_format_params = {
   rules: fpath;
   cli_matches: cli_match list;
   cli_errors: cli_error list;
-  hide_nudge: bool;
   engine_label: string;
   show_dataflow_traces: bool
 }
@@ -770,9 +769,7 @@ type apply_fixes_return = Semgrep_output_v1_t.apply_fixes_return = {
 type function_return = Semgrep_output_v1_t.function_return
 
 type format_context = Semgrep_output_v1_t.format_context = {
-  is_ci_invocation: bool;
-  is_logged_in: bool;
-  is_using_registry: bool
+  is_ci_invocation: bool
 }
   [@@deriving show]
 

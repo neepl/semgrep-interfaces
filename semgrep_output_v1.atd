@@ -1977,8 +1977,7 @@ type sarif_format_params <python decorator="dataclass(frozen=True)"> = {
   (* TODO: remove, just use cli_output *)
   cli_matches: cli_match list;
   cli_errors: cli_error list;
-  (* TODO: remove, should be able to derive those from format_context *)
-  hide_nudge: bool;
+  (* TODO: remove, should be able to derive this from format_context *)
   engine_label: string;
   show_dataflow_traces: bool;
 }
@@ -2020,8 +2019,6 @@ type format_context
      <python decorator="dataclass(frozen=True)"> =
 {
    is_ci_invocation: bool;
-   is_logged_in: bool;
-   is_using_registry: bool;
 }
 
 type dump_rule_partitions_params = {

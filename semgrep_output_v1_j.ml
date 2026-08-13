@@ -612,7 +612,6 @@ type sarif_format_params = Semgrep_output_v1_t.sarif_format_params = {
   rules: fpath;
   cli_matches: cli_match list;
   cli_errors: cli_error list;
-  hide_nudge: bool;
   engine_label: string;
   show_dataflow_traces: bool
 }
@@ -770,9 +769,7 @@ type apply_fixes_return = Semgrep_output_v1_t.apply_fixes_return = {
 type function_return = Semgrep_output_v1_t.function_return
 
 type format_context = Semgrep_output_v1_t.format_context = {
-  is_ci_invocation: bool;
-  is_logged_in: bool;
-  is_using_registry: bool
+  is_ci_invocation: bool
 }
   [@@deriving show]
 
@@ -23469,15 +23466,6 @@ let write_sarif_format_params : _ -> sarif_format_params -> _ = (
       is_first := false
     else
       Buffer.add_char ob ',';
-      Buffer.add_string ob "\"hide_nudge\":";
-    (
-      Yojson.Safe.write_bool
-    )
-      ob x.hide_nudge;
-    if !is_first then
-      is_first := false
-    else
-      Buffer.add_char ob ',';
       Buffer.add_string ob "\"engine_label\":";
     (
       Yojson.Safe.write_string
@@ -23505,7 +23493,6 @@ let read_sarif_format_params = (
     let field_rules = ref (None) in
     let field_cli_matches = ref (None) in
     let field_cli_errors = ref (None) in
-    let field_hide_nudge = ref (None) in
     let field_engine_label = ref (None) in
     let field_show_dataflow_traces = ref (None) in
     try
@@ -23526,26 +23513,12 @@ let read_sarif_format_params = (
                 )
               )
             | 10 -> (
-                match String.unsafe_get s pos with
-                  | 'c' -> (
-                      if String.unsafe_get s (pos+1) = 'l' && String.unsafe_get s (pos+2) = 'i' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'e' && String.unsafe_get s (pos+5) = 'r' && String.unsafe_get s (pos+6) = 'r' && String.unsafe_get s (pos+7) = 'o' && String.unsafe_get s (pos+8) = 'r' && String.unsafe_get s (pos+9) = 's' then (
-                        2
-                      )
-                      else (
-                        -1
-                      )
-                    )
-                  | 'h' -> (
-                      if String.unsafe_get s (pos+1) = 'i' && String.unsafe_get s (pos+2) = 'd' && String.unsafe_get s (pos+3) = 'e' && String.unsafe_get s (pos+4) = '_' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'u' && String.unsafe_get s (pos+7) = 'd' && String.unsafe_get s (pos+8) = 'g' && String.unsafe_get s (pos+9) = 'e' then (
-                        3
-                      )
-                      else (
-                        -1
-                      )
-                    )
-                  | _ -> (
-                      -1
-                    )
+                if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'l' && String.unsafe_get s (pos+2) = 'i' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'e' && String.unsafe_get s (pos+5) = 'r' && String.unsafe_get s (pos+6) = 'r' && String.unsafe_get s (pos+7) = 'o' && String.unsafe_get s (pos+8) = 'r' && String.unsafe_get s (pos+9) = 's' then (
+                  2
+                )
+                else (
+                  -1
+                )
               )
             | 11 -> (
                 if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'l' && String.unsafe_get s (pos+2) = 'i' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'm' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'c' && String.unsafe_get s (pos+8) = 'h' && String.unsafe_get s (pos+9) = 'e' && String.unsafe_get s (pos+10) = 's' then (
@@ -23557,7 +23530,7 @@ let read_sarif_format_params = (
               )
             | 12 -> (
                 if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'g' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'n' && String.unsafe_get s (pos+5) = 'e' && String.unsafe_get s (pos+6) = '_' && String.unsafe_get s (pos+7) = 'l' && String.unsafe_get s (pos+8) = 'a' && String.unsafe_get s (pos+9) = 'b' && String.unsafe_get s (pos+10) = 'e' && String.unsafe_get s (pos+11) = 'l' then (
-                  4
+                  3
                 )
                 else (
                   -1
@@ -23565,7 +23538,7 @@ let read_sarif_format_params = (
               )
             | 20 -> (
                 if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 'h' && String.unsafe_get s (pos+2) = 'o' && String.unsafe_get s (pos+3) = 'w' && String.unsafe_get s (pos+4) = '_' && String.unsafe_get s (pos+5) = 'd' && String.unsafe_get s (pos+6) = 'a' && String.unsafe_get s (pos+7) = 't' && String.unsafe_get s (pos+8) = 'a' && String.unsafe_get s (pos+9) = 'f' && String.unsafe_get s (pos+10) = 'l' && String.unsafe_get s (pos+11) = 'o' && String.unsafe_get s (pos+12) = 'w' && String.unsafe_get s (pos+13) = '_' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'r' && String.unsafe_get s (pos+16) = 'a' && String.unsafe_get s (pos+17) = 'c' && String.unsafe_get s (pos+18) = 'e' && String.unsafe_get s (pos+19) = 's' then (
-                  5
+                  4
                 )
                 else (
                   -1
@@ -23604,14 +23577,6 @@ let read_sarif_format_params = (
               )
             );
           | 3 ->
-            field_hide_nudge := (
-              Some (
-                (
-                  Atdgen_runtime.Oj_run.read_bool
-                ) p lb
-              )
-            );
-          | 4 ->
             field_engine_label := (
               Some (
                 (
@@ -23619,7 +23584,7 @@ let read_sarif_format_params = (
                 ) p lb
               )
             );
-          | 5 ->
+          | 4 ->
             field_show_dataflow_traces := (
               Some (
                 (
@@ -23649,26 +23614,12 @@ let read_sarif_format_params = (
                   )
                 )
               | 10 -> (
-                  match String.unsafe_get s pos with
-                    | 'c' -> (
-                        if String.unsafe_get s (pos+1) = 'l' && String.unsafe_get s (pos+2) = 'i' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'e' && String.unsafe_get s (pos+5) = 'r' && String.unsafe_get s (pos+6) = 'r' && String.unsafe_get s (pos+7) = 'o' && String.unsafe_get s (pos+8) = 'r' && String.unsafe_get s (pos+9) = 's' then (
-                          2
-                        )
-                        else (
-                          -1
-                        )
-                      )
-                    | 'h' -> (
-                        if String.unsafe_get s (pos+1) = 'i' && String.unsafe_get s (pos+2) = 'd' && String.unsafe_get s (pos+3) = 'e' && String.unsafe_get s (pos+4) = '_' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'u' && String.unsafe_get s (pos+7) = 'd' && String.unsafe_get s (pos+8) = 'g' && String.unsafe_get s (pos+9) = 'e' then (
-                          3
-                        )
-                        else (
-                          -1
-                        )
-                      )
-                    | _ -> (
-                        -1
-                      )
+                  if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'l' && String.unsafe_get s (pos+2) = 'i' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'e' && String.unsafe_get s (pos+5) = 'r' && String.unsafe_get s (pos+6) = 'r' && String.unsafe_get s (pos+7) = 'o' && String.unsafe_get s (pos+8) = 'r' && String.unsafe_get s (pos+9) = 's' then (
+                    2
+                  )
+                  else (
+                    -1
+                  )
                 )
               | 11 -> (
                   if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'l' && String.unsafe_get s (pos+2) = 'i' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'm' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'c' && String.unsafe_get s (pos+8) = 'h' && String.unsafe_get s (pos+9) = 'e' && String.unsafe_get s (pos+10) = 's' then (
@@ -23680,7 +23631,7 @@ let read_sarif_format_params = (
                 )
               | 12 -> (
                   if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'g' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'n' && String.unsafe_get s (pos+5) = 'e' && String.unsafe_get s (pos+6) = '_' && String.unsafe_get s (pos+7) = 'l' && String.unsafe_get s (pos+8) = 'a' && String.unsafe_get s (pos+9) = 'b' && String.unsafe_get s (pos+10) = 'e' && String.unsafe_get s (pos+11) = 'l' then (
-                    4
+                    3
                   )
                   else (
                     -1
@@ -23688,7 +23639,7 @@ let read_sarif_format_params = (
                 )
               | 20 -> (
                   if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 'h' && String.unsafe_get s (pos+2) = 'o' && String.unsafe_get s (pos+3) = 'w' && String.unsafe_get s (pos+4) = '_' && String.unsafe_get s (pos+5) = 'd' && String.unsafe_get s (pos+6) = 'a' && String.unsafe_get s (pos+7) = 't' && String.unsafe_get s (pos+8) = 'a' && String.unsafe_get s (pos+9) = 'f' && String.unsafe_get s (pos+10) = 'l' && String.unsafe_get s (pos+11) = 'o' && String.unsafe_get s (pos+12) = 'w' && String.unsafe_get s (pos+13) = '_' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'r' && String.unsafe_get s (pos+16) = 'a' && String.unsafe_get s (pos+17) = 'c' && String.unsafe_get s (pos+18) = 'e' && String.unsafe_get s (pos+19) = 's' then (
-                    5
+                    4
                   )
                   else (
                     -1
@@ -23727,14 +23678,6 @@ let read_sarif_format_params = (
                 )
               );
             | 3 ->
-              field_hide_nudge := (
-                Some (
-                  (
-                    Atdgen_runtime.Oj_run.read_bool
-                  ) p lb
-                )
-              );
-            | 4 ->
               field_engine_label := (
                 Some (
                   (
@@ -23742,7 +23685,7 @@ let read_sarif_format_params = (
                   ) p lb
                 )
               );
-            | 5 ->
+            | 4 ->
               field_show_dataflow_traces := (
                 Some (
                   (
@@ -23762,7 +23705,6 @@ let read_sarif_format_params = (
             rules = (match !field_rules with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "rules");
             cli_matches = (match !field_cli_matches with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "cli_matches");
             cli_errors = (match !field_cli_errors with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "cli_errors");
-            hide_nudge = (match !field_hide_nudge with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "hide_nudge");
             engine_label = (match !field_engine_label with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "engine_label");
             show_dataflow_traces = (match !field_show_dataflow_traces with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "show_dataflow_traces");
           }
@@ -30160,24 +30102,6 @@ let write_format_context : _ -> format_context -> _ = (
       Yojson.Safe.write_bool
     )
       ob x.is_ci_invocation;
-    if !is_first then
-      is_first := false
-    else
-      Buffer.add_char ob ',';
-      Buffer.add_string ob "\"is_logged_in\":";
-    (
-      Yojson.Safe.write_bool
-    )
-      ob x.is_logged_in;
-    if !is_first then
-      is_first := false
-    else
-      Buffer.add_char ob ',';
-      Buffer.add_string ob "\"is_using_registry\":";
-    (
-      Yojson.Safe.write_bool
-    )
-      ob x.is_using_registry;
     Buffer.add_char ob '}';
 )
 let string_of_format_context ?(len = 1024) x =
@@ -30189,8 +30113,6 @@ let read_format_context = (
     Yojson.Safe.read_space p lb;
     Yojson.Safe.read_lcurl p lb;
     let field_is_ci_invocation = ref (None) in
-    let field_is_logged_in = ref (None) in
-    let field_is_using_registry = ref (None) in
     try
       Yojson.Safe.read_space p lb;
       Yojson.Safe.read_object_end lb;
@@ -30199,34 +30121,12 @@ let read_format_context = (
         fun s pos len ->
           if pos < 0 || len < 0 || pos + len > String.length s then
             invalid_arg (Printf.sprintf "out-of-bounds substring position or length: string = %S, requested position = %i, requested length = %i" s pos len);
-          match len with
-            | 12 -> (
-                if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 'g' && String.unsafe_get s (pos+6) = 'g' && String.unsafe_get s (pos+7) = 'e' && String.unsafe_get s (pos+8) = 'd' && String.unsafe_get s (pos+9) = '_' && String.unsafe_get s (pos+10) = 'i' && String.unsafe_get s (pos+11) = 'n' then (
-                  1
-                )
-                else (
-                  -1
-                )
-              )
-            | 16 -> (
-                if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = '_' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'v' && String.unsafe_get s (pos+9) = 'o' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'a' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'i' && String.unsafe_get s (pos+14) = 'o' && String.unsafe_get s (pos+15) = 'n' then (
-                  0
-                )
-                else (
-                  -1
-                )
-              )
-            | 17 -> (
-                if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'u' && String.unsafe_get s (pos+4) = 's' && String.unsafe_get s (pos+5) = 'i' && String.unsafe_get s (pos+6) = 'n' && String.unsafe_get s (pos+7) = 'g' && String.unsafe_get s (pos+8) = '_' && String.unsafe_get s (pos+9) = 'r' && String.unsafe_get s (pos+10) = 'e' && String.unsafe_get s (pos+11) = 'g' && String.unsafe_get s (pos+12) = 'i' && String.unsafe_get s (pos+13) = 's' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'r' && String.unsafe_get s (pos+16) = 'y' then (
-                  2
-                )
-                else (
-                  -1
-                )
-              )
-            | _ -> (
-                -1
-              )
+          if len = 16 && String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = '_' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'v' && String.unsafe_get s (pos+9) = 'o' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'a' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'i' && String.unsafe_get s (pos+14) = 'o' && String.unsafe_get s (pos+15) = 'n' then (
+            0
+          )
+          else (
+            -1
+          )
       in
       let i = Yojson.Safe.map_ident p f lb in
       Atdgen_runtime.Oj_run.read_until_field_value p lb;
@@ -30234,22 +30134,6 @@ let read_format_context = (
         match i with
           | 0 ->
             field_is_ci_invocation := (
-              Some (
-                (
-                  Atdgen_runtime.Oj_run.read_bool
-                ) p lb
-              )
-            );
-          | 1 ->
-            field_is_logged_in := (
-              Some (
-                (
-                  Atdgen_runtime.Oj_run.read_bool
-                ) p lb
-              )
-            );
-          | 2 ->
-            field_is_using_registry := (
               Some (
                 (
                   Atdgen_runtime.Oj_run.read_bool
@@ -30268,34 +30152,12 @@ let read_format_context = (
           fun s pos len ->
             if pos < 0 || len < 0 || pos + len > String.length s then
               invalid_arg (Printf.sprintf "out-of-bounds substring position or length: string = %S, requested position = %i, requested length = %i" s pos len);
-            match len with
-              | 12 -> (
-                  if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 'g' && String.unsafe_get s (pos+6) = 'g' && String.unsafe_get s (pos+7) = 'e' && String.unsafe_get s (pos+8) = 'd' && String.unsafe_get s (pos+9) = '_' && String.unsafe_get s (pos+10) = 'i' && String.unsafe_get s (pos+11) = 'n' then (
-                    1
-                  )
-                  else (
-                    -1
-                  )
-                )
-              | 16 -> (
-                  if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = '_' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'v' && String.unsafe_get s (pos+9) = 'o' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'a' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'i' && String.unsafe_get s (pos+14) = 'o' && String.unsafe_get s (pos+15) = 'n' then (
-                    0
-                  )
-                  else (
-                    -1
-                  )
-                )
-              | 17 -> (
-                  if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'u' && String.unsafe_get s (pos+4) = 's' && String.unsafe_get s (pos+5) = 'i' && String.unsafe_get s (pos+6) = 'n' && String.unsafe_get s (pos+7) = 'g' && String.unsafe_get s (pos+8) = '_' && String.unsafe_get s (pos+9) = 'r' && String.unsafe_get s (pos+10) = 'e' && String.unsafe_get s (pos+11) = 'g' && String.unsafe_get s (pos+12) = 'i' && String.unsafe_get s (pos+13) = 's' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'r' && String.unsafe_get s (pos+16) = 'y' then (
-                    2
-                  )
-                  else (
-                    -1
-                  )
-                )
-              | _ -> (
-                  -1
-                )
+            if len = 16 && String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = '_' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'v' && String.unsafe_get s (pos+9) = 'o' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'a' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'i' && String.unsafe_get s (pos+14) = 'o' && String.unsafe_get s (pos+15) = 'n' then (
+              0
+            )
+            else (
+              -1
+            )
         in
         let i = Yojson.Safe.map_ident p f lb in
         Atdgen_runtime.Oj_run.read_until_field_value p lb;
@@ -30303,22 +30165,6 @@ let read_format_context = (
           match i with
             | 0 ->
               field_is_ci_invocation := (
-                Some (
-                  (
-                    Atdgen_runtime.Oj_run.read_bool
-                  ) p lb
-                )
-              );
-            | 1 ->
-              field_is_logged_in := (
-                Some (
-                  (
-                    Atdgen_runtime.Oj_run.read_bool
-                  ) p lb
-                )
-              );
-            | 2 ->
-              field_is_using_registry := (
                 Some (
                   (
                     Atdgen_runtime.Oj_run.read_bool
@@ -30335,8 +30181,6 @@ let read_format_context = (
         (
           {
             is_ci_invocation = (match !field_is_ci_invocation with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "is_ci_invocation");
-            is_logged_in = (match !field_is_logged_in with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "is_logged_in");
-            is_using_registry = (match !field_is_using_registry with Some x -> x | None -> Atdgen_runtime.Oj_run.missing_field p "is_using_registry");
           }
          : format_context)
       )

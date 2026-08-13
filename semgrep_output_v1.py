@@ -6953,7 +6953,6 @@ class SarifFormatParams:
     rules: Fpath
     cli_matches: List[CliMatch]
     cli_errors: List[CliError]
-    hide_nudge: bool
     engine_label: str
     show_dataflow_traces: bool
 
@@ -6964,7 +6963,6 @@ class SarifFormatParams:
                 rules=Fpath.from_json(x['rules']) if 'rules' in x else _atd_missing_json_field('SarifFormatParams', 'rules'),
                 cli_matches=_atd_read_list(CliMatch.from_json)(x['cli_matches']) if 'cli_matches' in x else _atd_missing_json_field('SarifFormatParams', 'cli_matches'),
                 cli_errors=_atd_read_list(CliError.from_json)(x['cli_errors']) if 'cli_errors' in x else _atd_missing_json_field('SarifFormatParams', 'cli_errors'),
-                hide_nudge=_atd_read_bool(x['hide_nudge']) if 'hide_nudge' in x else _atd_missing_json_field('SarifFormatParams', 'hide_nudge'),
                 engine_label=_atd_read_string(x['engine_label']) if 'engine_label' in x else _atd_missing_json_field('SarifFormatParams', 'engine_label'),
                 show_dataflow_traces=_atd_read_bool(x['show_dataflow_traces']) if 'show_dataflow_traces' in x else _atd_missing_json_field('SarifFormatParams', 'show_dataflow_traces'),
             )
@@ -6976,7 +6974,6 @@ class SarifFormatParams:
         res['rules'] = (lambda x: x.to_json())(self.rules)
         res['cli_matches'] = _atd_write_list((lambda x: x.to_json()))(self.cli_matches)
         res['cli_errors'] = _atd_write_list((lambda x: x.to_json()))(self.cli_errors)
-        res['hide_nudge'] = _atd_write_bool(self.hide_nudge)
         res['engine_label'] = _atd_write_string(self.engine_label)
         res['show_dataflow_traces'] = _atd_write_bool(self.show_dataflow_traces)
         return res
@@ -8386,16 +8383,12 @@ class FormatContext:
     """Original type: format_context = { ... }"""
 
     is_ci_invocation: bool
-    is_logged_in: bool
-    is_using_registry: bool
 
     @classmethod
     def from_json(cls, x: Any) -> 'FormatContext':
         if isinstance(x, dict):
             return cls(
                 is_ci_invocation=_atd_read_bool(x['is_ci_invocation']) if 'is_ci_invocation' in x else _atd_missing_json_field('FormatContext', 'is_ci_invocation'),
-                is_logged_in=_atd_read_bool(x['is_logged_in']) if 'is_logged_in' in x else _atd_missing_json_field('FormatContext', 'is_logged_in'),
-                is_using_registry=_atd_read_bool(x['is_using_registry']) if 'is_using_registry' in x else _atd_missing_json_field('FormatContext', 'is_using_registry'),
             )
         else:
             _atd_bad_json('FormatContext', x)
@@ -8403,8 +8396,6 @@ class FormatContext:
     def to_json(self) -> Any:
         res: Dict[str, Any] = {}
         res['is_ci_invocation'] = _atd_write_bool(self.is_ci_invocation)
-        res['is_logged_in'] = _atd_write_bool(self.is_logged_in)
-        res['is_using_registry'] = _atd_write_bool(self.is_using_registry)
         return res
 
     @classmethod

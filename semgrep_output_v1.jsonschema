@@ -1637,7 +1637,7 @@
     "sarif_format_params": {
       "type": "object",
       "required": [
-        "rules", "cli_matches", "cli_errors", "hide_nudge", "engine_label",
+        "rules", "cli_matches", "cli_errors", "engine_label",
         "show_dataflow_traces"
       ],
       "properties": {
@@ -1650,7 +1650,6 @@
           "type": "array",
           "items": { "$ref": "#/definitions/cli_error" }
         },
-        "hide_nudge": { "type": "boolean" },
         "engine_label": { "type": "string" },
         "show_dataflow_traces": { "type": "boolean" }
       }
@@ -1679,12 +1678,8 @@
     },
     "format_context": {
       "type": "object",
-      "required": [ "is_ci_invocation", "is_logged_in", "is_using_registry" ],
-      "properties": {
-        "is_ci_invocation": { "type": "boolean" },
-        "is_logged_in": { "type": "boolean" },
-        "is_using_registry": { "type": "boolean" }
-      }
+      "required": [ "is_ci_invocation" ],
+      "properties": { "is_ci_invocation": { "type": "boolean" } }
     },
     "dump_rule_partitions_params": {
       "type": "object",
