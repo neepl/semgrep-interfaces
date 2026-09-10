@@ -40,6 +40,7 @@ type t =
 | Rust
 | Scala
 | Scheme
+| Smali
 | Solidity
 | Swift
 | Terraform
@@ -580,6 +581,19 @@ let list = [
   keys = [{|scheme|}];
   exts = [{|.scm|}; {|.ss|}];
   maturity = Alpha;
+  example_ext = None;
+  excluded_exts = [];
+  reverse_exts = None;
+  shebangs = [];
+  tags = [];
+};
+{
+  id = Smali;
+  id_string = "smali";
+  name = "Smali";
+  keys = [{|smali|}];
+  exts = [{|.smali|}];
+  maturity = Develop;
   example_ext = None;
   excluded_exts = [];
   reverse_exts = None;
